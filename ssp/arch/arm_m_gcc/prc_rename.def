@@ -1,0 +1,20 @@
+# prc_config.c
+exc_tbl
+vector_table
+lock_flag
+saved_iipm
+intnest
+default_exc_handler
+default_int_handler
+x_config_int
+x_clear_int
+prc_initialize
+prc_terminate
+bitpat_cfgint
+
+# prc_support.S
+int_entry
+exc_entry
+ret_int
+ret_exc
+svc_handler

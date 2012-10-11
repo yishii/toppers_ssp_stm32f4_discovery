@@ -1,0 +1,157 @@
+# startup.c
+kerflg
+exit_kernel
+call_exit_kernel
+
+# task.c
+runtsk_curpri
+runtsk_ipri
+ready_primap
+reqflg
+disdsp
+search_schedtsk
+test_dormant
+get_ipri
+get_ipri_self
+initialize_task
+make_active
+dispatcher
+run_task
+bitmap_search_table
+bitmap_search
+primap_empty
+primap_test
+primap_set
+primap_clear
+bitmap_search
+
+# time_event.c
+current_time
+min_time
+initialize_time_event
+time_event_enqueue
+time_event_dequeue
+signal_time
+
+# cyclic.c
+initialize_cyclic
+call_cychdr
+
+# alarm.c
+initialize_alarm
+call_almhdr
+
+# interrupt.c
+initialize_interrupt
+
+# exception.c
+initialize_exception
+
+# cyclic.c
+initialize_cyclic
+call_cychdr
+
+# alarm.c
+initialize_alarm
+call_almhdr
+
+# time_event.c
+current_time
+min_time
+initialize_time_event
+time_event_enqueue
+time_event_dequeue
+signal_time
+
+# eventflag.c
+initialize_eventflag
+
+
+# dataqueue.c
+initialize_dataqueue
+send_data
+receive_data
+
+
+# kernel_cfg.c
+init_rdypmap
+tmax_tskid
+tinib_exinf
+tinib_task
+tinib_epriority
+tnum_inhno
+inhinib_inhno
+inhinib_inhatr
+inhinib_entry
+tnum_intno
+intinib_intno
+intinib_intatr
+intinib_intpri
+tnum_excno
+excinib_excno
+excinib_excatr
+excinib_entry
+tmax_cycid
+cycinib_cycact
+cycinib_cycphs
+cycinib_cychdr
+cycinib_cyctim
+cycinib_exinf
+cyccb_cycact
+cyccb_evttim
+cycevtid_offset
+almevtid_offset
+almcb_almact
+tmax_almid
+alminib_almhdr
+alminib_exinf
+tnum_tmevt_queue
+tmevt_queue
+tmevt_time
+tmevt_callback
+tmevt_arg
+stksz
+stk
+istkpt
+initialize_object
+call_inirtn
+call_terrtn
+tmax_cycid
+cycinib_cycact
+cycinib_cychdr
+cycinib_cyctim
+cycinib_cycphs
+cycinib_exinf
+cyccb_cycact
+cyccb_evttim
+cycevtid_offset
+tmax_almid
+alminib_almhdr
+alminib_exinf
+almcb_almact
+almevtid_offset
+tnum_tmevt_queue
+tmevt_queue
+tmevt_time
+tmevt_callback
+tmevt_arg
+tmax_flgid
+flginib_atr
+flginib_iflgptn
+flgcb_flgptn
+tmax_dtqid
+dtqinib_atr
+dtqinib_data
+dtqinib_size
+dtqcb_count
+dtqcb_head
+dtqcb_tail
+
+# target_config.c
+target_initialize
+start_dispatch
+target_exit
+
+
+
+INCLUDE "target"

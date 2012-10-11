@@ -1,0 +1,11 @@
+tsk,CRE_TSK,#tskid { .tskatr &exinf &task +atskpri .stksz &stk },
+tsk,DEF_EPRI,%tskid { +etskpri },0,1,
+int,CFG_INT,.intno { .intatr +intpri },
+isr,ATT_ISR,{ .isratr &exinf .intno &isr +isrpri },-1
+inh,DEF_INH,.inhno { .inhatr &inthdr },
+ics,DEF_ICS,{ .istksz &istk },-1
+exc,DEF_EXC,.excno { .excatr &exchdr },
+ini,ATT_INI,{ .iniatr &exinf &inirtn },-1
+ter,ATT_TER,{ .teratr &exinf &terrtn },-1
+cyc,CRE_CYC,#cycid { .cycatr &exinf &cychdr .cyctim .cycphs },,
+alm,CRE_ALM,#almid { .almatr &exinf &almhdr },,

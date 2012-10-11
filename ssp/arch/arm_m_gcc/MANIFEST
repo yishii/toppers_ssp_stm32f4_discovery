@@ -1,0 +1,28 @@
+PACKAGE ssp_arch_arm_m_gcc
+VERSION 1.1.1
+
+MANIFEST
+Makefile.prc
+arm_m.h
+prc.tf
+prc_cfg1_out.h
+prc_check.tf
+prc_config.c
+prc_config.h
+prc_def.csv
+prc_design.txt
+prc_insn.h
+prc_kernel.h
+prc_rename.def
+prc_rename.h
+prc_sil.h
+prc_stddef.h
+prc_support.S
+prc_test.h
+prc_timer.cfg
+prc_timer.c
+prc_timer.h
+prc_unrename.h
+prc_user.txt
+start.S
+

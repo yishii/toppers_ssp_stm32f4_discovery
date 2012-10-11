@@ -1,0 +1,91 @@
+#
+#  TOPPERS/ASP Kernel
+#      Toyohashi Open Platform for Embedded Real-Time Systems/
+#      Advanced Standard Profile Kernel
+# 
+#  Copyright (C) 2003 by Embedded and Real-Time Systems Laboratory
+#                              Toyohashi Univ. of Technology, JAPAN
+#  Copyright (C) 2005-2008 by Embedded and Real-Time Systems Laboratory
+#              Graduate School of Information Science, Nagoya Univ., JAPAN
+#  Copyright (C) 2010 by Meika Sugimoto
+# 
+#  上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
+#  ア（本ソフトウェアを改変したものを含む．以下同じ）を使用・複製・改
+#  変・再配布（以下，利用と呼ぶ）することを無償で許諾する．
+#  (1) 本ソフトウェアをソースコードの形で利用する場合には，上記の著作
+#      権表示，この利用条件および下記の無保証規定が，そのままの形でソー
+#      スコード中に含まれていること．
+#  (2) 本ソフトウェアを，ライブラリ形式など，他のソフトウェア開発に使
+#      用できる形で再配布する場合には，再配布に伴うドキュメント（利用
+#      者マニュアルなど）に，上記の著作権表示，この利用条件および下記
+#      の無保証規定を掲載すること．
+#  (3) 本ソフトウェアを，機器に組み込むなど，他のソフトウェア開発に使
+#      用できない形で再配布する場合には，次のいずれかの条件を満たすこ
+#      と．
+#    (a) 再配布に伴うドキュメント（利用者マニュアルなど）に，上記の著
+#        作権表示，この利用条件および下記の無保証規定を掲載すること．
+#    (b) 再配布の形態を，別に定める方法によって，TOPPERSプロジェクトに
+#        報告すること．
+#  (4) 本ソフトウェアの利用により直接的または間接的に生じるいかなる損
+#      害からも，上記著作権者およびTOPPERSプロジェクトを免責すること．
+#      また，本ソフトウェアのユーザまたはエンドユーザからのいかなる理
+#      由に基づく請求からも，上記著作権者およびTOPPERSプロジェクトを
+#      免責すること．
+# 
+#  本ソフトウェアは，無保証で提供されているものである．上記著作権者お
+#  よびTOPPERSプロジェクトは，本ソフトウェアに関して，特定の使用目的
+#  に対する適合性も含めて，いかなる保証も行わない．また，本ソフトウェ
+#  アの利用により直接的または間接的に生じたいかなる損害に関しても，そ
+#  の責任を負わない．
+# 
+
+#
+#		カーネルのファイル構成の定義
+#
+
+#
+#  1つのソースファイルから複数のオブジェクトファイルを生成するように作
+#  成されたソースファイルのリスト
+#
+KERNEL_FCSRCS = startup.c task.c task_manage.c					\
+				interrupt.c exception.c sys_manage.c cyclic.c	\
+				alarm.c time_manage.c time_event.c
+
+#
+#  各ソースファイルから生成されるオブジェクトファイルのリスト
+#
+startup = sta_ker.o ext_ker.o
+
+task = tskini.o get_ipri.o get_ipriself.o tsksched.o \
+			tskact.o tskrun.o tskdsp.o tskdmt.o
+
+time_event = tmevtini.o tmevtenq.o tmevtdeq.o sig_tim.o
+
+task_manage = act_tsk.o iact_tsk.o
+
+time_manage = get_tim.o
+
+cyclic = cycini.o sta_cyc.o stp_cyc.o cyccal.o
+
+alarm = almini.o sta_alm.o stp_alm.o almcal.o
+
+sys_manage = loc_cpu.o iloc_cpu.o unl_cpu.o iunl_cpu.o dis_dsp.o ena_dsp.o \
+		sns_ctx.o sns_loc.o sns_dsp.o sns_dpn.o sns_ker.o
+
+interrupt = intini.o dis_int.o ena_int.o
+
+exception = excini.o
+
+#
+#  生成されるオブジェクトファイルの依存関係の定義
+#
+$(startup) $(startup:.o=.s) $(startup:.o=.d): startup.c
+$(task) $(task:.o=.s) $(task:.o=.d): task.c
+$(time_event) $(time_event:.o=.s) $(time_event:.o=.d): time_event.c
+$(task_manage) $(task_manage:.o=.s) $(task_manage:.o=.d): task_manage.c
+$(time_manage) $(time_manage:.o=.s) $(time_manage:.o=.d): time_manage.c
+$(cyclic) $(cyclic:.o=.s) $(cyclic:.o=.d): cyclic.c
+$(alarm) $(alarm:.o=.s) $(alarm:.o=.d): alarm.c
+$(sys_manage) $(sys_manage:.o=.s) $(sys_manage:.o=.d): sys_manage.c
+$(interrupt) $(interrupt:.o=.s) $(interrupt:.o=.d): interrupt.c
+$(exception) $(exception:.o=.s) $(exception:.o=.d): exception.c

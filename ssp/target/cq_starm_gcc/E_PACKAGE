@@ -1,0 +1,6 @@
+E_PACKAGE ssp_cq_starm_gcc
+VERSION %date
+
+INCLUDE ../../MANIFEST
+INCLUDE ./MANIFEST
+INCLUDE ../../cfg/MANIFEST
