@@ -1,0 +1,113 @@
+#
+#		Makefile のターゲット依存部（CQ-STARM用）
+#
+
+#
+#  ボード名，プロセッサ名，開発環境名の定義
+#
+BOARD = cq_starm
+PRC   = arm_m
+TOOL  = gcc
+
+#
+#  ROM化するかどうか
+#
+
+ROM_BOOT = true
+
+#
+#  GNU開発環境のターゲットアーキテクチャの定義
+#
+GCC_TARGET = arm-none-eabi
+
+#
+#  各セグメントの開始アドレスの定義
+#
+
+#
+#  非タスクコンテキスト用のスタックの初期値（底）
+#
+DEFAULT_STK_TOP = 0x20005000
+
+#
+#  コンパイルオプション
+#
+INCLUDES := $(INCLUDES) -I$(TARGETDIR)
+CDEFS := $(CDEFS)
+COPTS := $(COPTS) -mcpu=cortex-m3
+
+#
+#  カーネルに関する定義
+#
+KERNEL_DIR := $(KERNEL_DIR) $(TARGETDIR)
+KERNEL_ASMOBJS := $(KERNEL_ASMOBJS) target_support.o 
+KERNEL_COBJS := $(KERNEL_COBJS) target_config.o target_serial.o
+KERNEL_CFLAGS := $(KERNEL_CFLAGS) -fno-strict-aliasing -mcpu=cortex-m3
+
+#
+#  システムサービスに関する定義
+#
+SYSSVC_DIR := $(SYSSVC_DIR)
+SYSSVC_COBJS := $(SYSSVC_COBJS)
+
+#
+#  コンフィギュレータ関係の変数の定義
+#
+CFG_TABS := $(CFG_TABS) --cfg1-def-table $(TARGETDIR)/target_def.csv
+
+#
+#  トレースログに関する設定
+#
+ifeq ($(ENABLE_TRACE),true)
+	COPTS := $(COPTS) -DTOPPERS_ENABLE_TRACE
+	KERNEL_DIR := $(KERNEL_DIR) $(SRCDIR)/arch/logtrace
+	KERNEL_COBJS := $(KERNEL_COBJS) trace_config.o trace_dump.o
+endif
+
+#
+#  ROM化時は ROM_BOOTをtrueに定義する
+#
+ifeq ($(ROM_BOOT),true)
+	CDEFS := $(CDEFS) -DROM_BOOT
+else
+	CDEFS := $(CDEFS) -DINIT_MSP
+endif
+
+#
+#  リンカスクリプトの定義
+#
+
+ifeq ($(ROM_BOOT),true)
+	LDSCRIPT = $(SRCDIR)/target/$(BOARD)_$(TOOL)/cq_starm_rom.ld
+else
+	LDSCRIPT = $(SRCDIR)/target/$(BOARD)_$(TOOL)/cq_starm_ram.ld
+endif
+
+#
+#  スタートアップモジュールに関する定義
+#
+#  cq_starm.ldに「STARTUP(start.o)」を記述したため，スタートアップモジュー
+#  ルの名前をHIDDEN_OBJSに定義する．また，LDFLAGSに-nostdlibを追加している．
+#
+HIDDEN_OBJS = start.o
+
+$(HIDDEN_OBJS): %.o: %.S
+	$(CC) -c $(CFLAGS) $(KERNEL_CFLAGS) $<
+
+$(HIDDEN_OBJS:.o=.d): %.d: %.S
+	@$(PERL) $(SRCDIR)/utils/makedep -C $(CC) \
+		-O "$(CFLAGS) $(KERNEL_CFLAGS)" $< >> Makefile.depend
+
+LDFLAGS := -nostdlib $(LDFLAGS)
+
+#
+#  依存関係の定義
+#
+cfg1_out.c: $(TARGETDIR)/target_def.csv
+kernel_cfg.timestamp: $(TARGETDIR)/target.tf
+$(OBJFILE): $(TARGETDIR)/target_check.tf
+
+#
+#  プロセッサ依存部のインクルード
+#
+include $(SRCDIR)/arch/$(PRC)_$(TOOL)/Makefile.prc
