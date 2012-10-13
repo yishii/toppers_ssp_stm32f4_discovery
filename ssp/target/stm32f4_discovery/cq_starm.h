@@ -8,6 +8,9 @@
  *  Copyright (C) 2005-2007 by Embedded and Real-Time Systems Laboratory
  *              Graduate School of Information Science, Nagoya Univ., JAPAN
  * 
+ *  Ported to STM32F4(-discovery) by Yasuhiro ISHII 2012
+ *  Email : ishii.yasuhiro@gmail.com
+ *
  *  上記著作権者は，Free Software Foundation によって公表されている 
  *  GNU General Public License の Version 2 に記述されている条件か，以
  *  下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェア（本ソフトウェ
@@ -49,9 +52,9 @@
  *  システムクロックの定義（発振子周波数8MHz）
  */
 #define HSE_CLOCK		(8000000)
-#define SYS_CLOCK		(HSE_CLOCK * 9)
-#define PCLK1_CLOCK		((HSE_CLOCK * 9) >> 1)
-#define PCLK2_CLOCK		(HSE_CLOCK * 9)
+#define SYS_CLOCK		(HSE_CLOCK * 21)
+#define PCLK1_CLOCK		((HSE_CLOCK * 21) >> 2)
+#define PCLK2_CLOCK		((HSE_CLOCK * 21) >> 1)
 
 /*
  *  割込み番号の最大値
@@ -104,21 +107,29 @@
 /* BUS:APB2 */
 #define AFIO_BASE				(APB2_PERIPH)
 #define EXTI_BASE				(APB2_PERIPH + 0x400)
-#define GPIOA_BASE				(APB2_PERIPH + 0x800)
-#define GPIOB_BASE				(APB2_PERIPH + 0xC00)
-#define GPIOC_BASE				(APB2_PERIPH + 0x1000)
-#define GPIOD_BASE				(APB2_PERIPH + 0x1400)
-#define GPIOE_BASE				(APB2_PERIPH + 0x1800)
+
+#define GPIOA_BASE				(AHB_PERIPH  + 0x0000)
+#define GPIOB_BASE				(AHB_PERIPH  + 0x0400)
+#define GPIOC_BASE				(AHB_PERIPH  + 0x0800)
+#define GPIOD_BASE				(AHB_PERIPH  + 0x0C00)
+#define GPIOE_BASE				(AHB_PERIPH  + 0x1000)
+#define GPIOF_BASE				(AHB_PERIPH  + 0x1400)
+#define GPIOG_BASE				(AHB_PERIPH  + 0x1800)
+#define GPIOH_BASE				(AHB_PERIPH  + 0x1C00)
+#define GPIOI_BASE				(AHB_PERIPH  + 0x2000)
 #define ADC1_BASE				(APB2_PERIPH + 0x2400)
 #define ADC2_BASE				(APB2_PERIPH + 0x2800)
 #define TIM1_BASE				(APB2_PERIPH + 0x2C00)
 #define SPI1_BASE				(APB2_PERIPH + 0x3000)
-#define USART1_BASE				(APB2_PERIPH + 0x3800)
+
+#define USART1_BASE				(APB2_PERIPH + 0x1000)
 
 /* BUS:AHB */
 #define DMA_BASE				(AHB_PERIPH)
-#define RCC_BASE				(AHB_PERIPH + 0x1000)
-#define FLASH_BASE				(AHB_PERIPH + 0x2000)
+
+#define RCC_BASE				(AHB_PERIPH + 0x3800)
+
+#define FLASH_BASE				(AHB_PERIPH + 0x3C00)
 
 /* System Control space */
 #define SCS_BASE				(0xE000E000)
@@ -127,17 +138,37 @@
 #define SYSCB_BASE				(SCS_BASE + 0x0D00)
 
 /* RCC */
-#define RCC_CR					(RCC_BASE)
-#define RCC_CFGR				(RCC_BASE + 0x04)
-#define RCC_CIR					(RCC_BASE + 0x08)
-#define RCC_APB2RSTR			(RCC_BASE + 0x0C)
-#define RCC_APB1RSTR			(RCC_BASE + 0x10)
-#define RCC_AHBENR				(RCC_BASE + 0x14)
-#define RCC_APB2ENR				(RCC_BASE + 0x18)
-#define RCC_APB1ENR				(RCC_BASE + 0x1C)
-#define RCC_BDCR				(RCC_BASE + 0x20)
-#define RCC_CSR					(RCC_BASE + 0x24)
 
+
+#define RCC_CR					(RCC_BASE)
+#define RCC_PLLCFGR				(RCC_BASE + 0x04)
+#define RCC_CFGR				(RCC_BASE + 0x08)
+#define RCC_CIR					(RCC_BASE + 0x0C)
+#define RCC_AHB1RSTR				(RCC_BASE + 0x10)
+#define RCC_AHB2RSTR				(RCC_BASE + 0x14)
+#define RCC_AHB3RSTR				(RCC_BASE + 0x18)
+
+#define RCC_APB1RSTR				(RCC_BASE + 0x20)
+#define RCC_APB2RSTR				(RCC_BASE + 0x24)
+
+#define RCC_AHB1ENR				(RCC_BASE + 0x30)
+#define RCC_AHB2ENR				(RCC_BASE + 0x34)
+#define RCC_AHB3ENR				(RCC_BASE + 0x38)
+#define RCC_APB1ENR				(RCC_BASE + 0x40)
+#define RCC_APB2ENR				(RCC_BASE + 0x44)
+
+#define RCC_AHB1LPENR				(RCC_BASE + 0x50)
+#define RCC_AHB2LPENR				(RCC_BASE + 0x54)
+#define RCC_AHB3LPENR				(RCC_BASE + 0x58)
+
+#define RCC_APB1LPENR				(RCC_BASE + 0x60)
+#define RCC_APB2LPENR				(RCC_BASE + 0x64)
+
+#define RCC_BDCR				(RCC_BASE + 0x70)
+#define RCC_CSR					(RCC_BASE + 0x74)
+
+#define RCC_SSCGR				(RCC_BASE + 0x80)
+#define RCC_PLLI2SCFGR				(RCC_BASE + 0x84)
 
 /* NVIC */
 #define NVIC_ENAVLE_REG(ch)		(NVIC_BASE + ((ch) >> 5))
@@ -148,13 +179,22 @@
 #define NVIC_PRIO_REG(ch)		(NVIC_BASE + 0x300 + ((ch) >> 2))
 
 /* GPIOx */
-#define GPIO_CRL(x)				(x)
-#define GPIO_CRH(x)				((x) + 0x04)
-#define GPIO_IDR(x)				((x) + 0x08)
-#define GPIO_ODR(x)				((x) + 0x0C)
-#define GPIO_BSRR(x)			((x) + 0x10)
-#define GPIO_BRR(x)				((x) + 0x14)
-#define GPIO_LCKR(x)			((x) + 0x18)
+
+
+#define GPIO_MODER(x)			(x)
+#define GPIO_OTYPER(x)			((x) + 0x04)
+#define GPIO_OSPEEDR(x)			((x) + 0x08)
+#define GPIO_PUPDR(x)			((x) + 0x0C)
+#define GPIO_IDR(x)			((x) + 0x10)
+#define GPIO_ODR(x)			((x) + 0x14)
+#define GPIO_BSRR(x)			((x) + 0x18)
+#define GPIO_LCKR(x)			((x) + 0x1C)
+#define GPIO_AFRL(x)			((x) + 0x20)
+#define GPIO_AFRH(x)			((x) + 0x24)
+
+/* PWR */
+#define PWR_CR				(PWR_BASE)
+#define PWR_CSR				(PWR_BASE + 0x04)
 
 /* AFIO */
 #define AFIO_EVCR				(AFIO_BASE)
@@ -212,6 +252,7 @@
 #define ACR_LATENCY_ONE			(0x01)
 #define ACR_LATENCY_TWO			(0x02)
 
+#define PWR_CR_VOS			(0x00004000)
 /* GPIOxレジスタ定義 */
 #define CNF_IN_ANALOG			(0x00)
 #define CNF_IN_FLOATING			(0x01)
@@ -221,9 +262,16 @@
 #define CNF_OUT_AF_PP			(0x02)
 #define CNF_OUT_AF_OD			(0x03)
 #define MODE_INPUT				(0x00)
-#define MODE_OUTPUT_10MHZ		(0x01)
-#define MODE_OUTPUT_2MHZ		(0x02)
-#define MODE_OUTPUT_50MHZ		(0x03)
+
+#define MODE_OUTPUT_2MHZ		(0x00)
+#define MODE_OUTPUT_25MHZ		(0x01)
+#define MODE_OUTPUT_50MHZ		(0x02)
+#define MODE_OUTPUT_100MHZ		(0x03)
+/* Flash interface register */
+#define FLASH_ACR_PRFTEN		(0x0100)
+#define FLASH_ACR_ICEN			(0x0200)
+#define FLASH_ACR_DCEN			(0x0400)
+#define FLASH_ACR_LATENCY_5WS		(0x0005)
 
 #define CR_MODE_MASK(x)			(0x03 << ((x) << 2))
 #define CR_CNF_MASK(x)			(0x0C << ((x) << 2))
