@@ -73,6 +73,6 @@ utils/makedep
 utils/makerelease
 
 INCLUDE arch/arm_m_gcc/MANIFEST
-INCLUDE target/cq_starm_gcc/MANIFEST
+INCLUDE target/stm32f4_discovery/MANIFEST
 INCLUDE arch/gcc/MANIFEST
 INCLUDE extension/MANIFEST

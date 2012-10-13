@@ -1,4 +1,4 @@
-E_PACKAGE ssp_cq_starm_gcc
+E_PACKAGE stm32f4_discovery
 VERSION %date
 
 INCLUDE ../../MANIFEST
