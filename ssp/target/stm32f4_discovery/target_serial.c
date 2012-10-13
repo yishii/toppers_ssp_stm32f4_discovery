@@ -7,6 +7,9 @@
  *              Graduate School of Information Science, Nagoya Univ., JAPAN
  *  Copyright (C) 2010 by Meika Sugimoto
  * 
+ *  Ported to STM32F4(-discovery) by Yasuhiro ISHII 2012
+ *  Email : ishii.yasuhiro@gmail.com
+ *
  *  上記著作権者は，以下の(1)〜(4)の条件を満たす場合に限り，本ソフトウェ
  *  ア（本ソフトウェアを改変したものを含む．以下同じ）を使用・複製・改
  *  変・再配布（以下，利用と呼ぶ）することを無償で許諾する．
@@ -129,8 +132,19 @@ void target_low_output_init(ID siopid)
 	/* CR3初期化 */
 	sil_wrw_mem((void*)USART_CR3(reg), 0);
 
+	/*
+	  STM32F4 USARTs
+	  USART1	APB2(Max. 84MHz)
+	  USART2	APB1(Max. 42MHz)
+	  USART3	APB1
+	  USART4	APB1
+	  USART5	APB1
+	  USART6	APB2
+	  for detailed information,check datasheet "USART feature comparison"
+	*/
+
 	/* 通信速度設定 */
-	if (siopid == 1) {
+	if (siopid == 1) { // USART1 and USART6 : PCLK2_CLOCK and others PCLK1_CLOCK
 		/* fck=72MHz */
 		src_clock = PCLK2_CLOCK;
 	} else {
